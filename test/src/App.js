@@ -1,23 +1,20 @@
+import "./App.css";
+import AppNavBar from "./components/AppNavBar";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Spinner } from "reactstrap";
-
-import { getAuthUser } from "./js/actions/authActions";
-
-import AppNavbar from "./components/AppNavBar";
+import PrivateRoute from "./components/routes/PrivateRoute";
 import Home from "./components/pages/Home";
 import Dashboard from "./components/pages/Dashboard";
-import PrivateRoute from "./components/routes/PrivateRoute";
-
-import "./App.css";
+import Items from "./components/pages/Items";
+import { getAuthUser } from "./redux/actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Spinner } from "reactstrap";
 
 function App() {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.authReducer);
+  const isLoading = useSelector((state) => state.authReducer.isLoading);
   const getUser = () => dispatch(getAuthUser());
-
   useEffect(() => {
     getUser();
   }, []);
@@ -35,10 +32,11 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AppNavbar />
+      <AppNavBar />
       <Switch>
         <Route exact path="/" component={Home} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
+        <PrivateRoute path="/items" component={Items} />
       </Switch>
     </BrowserRouter>
   );

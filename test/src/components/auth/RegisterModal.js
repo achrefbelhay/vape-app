@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import { useState } from "react";
 import {
   Button,
   Modal,
@@ -13,43 +13,65 @@ import {
   Input,
   NavLink,
 } from "reactstrap";
+import { registerUser } from "../../redux/actions/authActions";
 
-import { loginUser } from "../../js/actions/authActions";
-
-const LoginModal = () => {
+function RegisterModal() {
   const [modal, setModal] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const toggle = () => {
     setModal(!modal);
   };
-
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const handleLogin = () => {
-    dispatch(loginUser({ email, password }));
-    history.push("/");
+  const handleRegister = () => {
+    const newUser = { name, lastName, email, password };
+    dispatch(registerUser(newUser));
+    history.push("/dashboard");
     setEmail("");
+    setName("");
+    setLastName("");
     setPassword("");
   };
 
   return (
     <div style={{ padding: "0 15px" }}>
       <NavLink onClick={toggle} href="#">
-        Login
+        Register
       </NavLink>
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Login</ModalHeader>
+        <ModalHeader toggle={toggle}>Register</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
+              <Label for="name">Name</Label>
+              <Input
+                type="text"
+                name="name"
+                value={name}
+                id="name"
+                placeholder="Name"
+                className="mb-3"
+                onChange={(e) => setName(e.target.value)}
+              />
+
+              <Label for="name">Last Name</Label>
+              <Input
+                type="text"
+                name="lastName"
+                id="lastName"
+                value={lastName}
+                placeholder="Last Name"
+                className="mb-3"
+                onChange={(e) => setLastName(e.target.value)}
+              />
               <Label for="email">Email</Label>
               <Input
                 type="email"
-                value={email}
                 name="email"
+                value={email}
                 id="email"
                 placeholder="email"
                 className="mb-3"
@@ -58,8 +80,8 @@ const LoginModal = () => {
               <Label for="password">Password</Label>
               <Input
                 type="password"
-                value={password}
                 name="password"
+                value={password}
                 id="password"
                 placeholder="Password"
                 className="mb-3"
@@ -69,9 +91,9 @@ const LoginModal = () => {
                 color="dark"
                 style={{ marginTop: "2rem" }}
                 block
-                onClick={handleLogin}
+                onClick={handleRegister}
               >
-                Login
+                Register
               </Button>
             </FormGroup>
           </Form>
@@ -79,6 +101,6 @@ const LoginModal = () => {
       </Modal>
     </div>
   );
-};
+}
 
-export default LoginModal;
+export default RegisterModal;

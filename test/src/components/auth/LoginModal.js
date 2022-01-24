@@ -14,7 +14,7 @@ import {
   NavLink,
 } from "reactstrap";
 
-import { loginUser } from "../../js/actions/authActions";
+import { loginUser } from "../../redux/actions/authActions";
 
 const LoginModal = () => {
   const [modal, setModal] = useState(false);
@@ -30,14 +30,14 @@ const LoginModal = () => {
 
   const handleLogin = () => {
     dispatch(loginUser({ email, password }));
-    history.push("/");
+    history.push("/dashboard");
     setEmail("");
     setPassword("");
   };
 
   return (
     <div style={{ padding: "0 15px" }}>
-      <NavLink onClick={toggle} href="#">
+      <NavLink onClick={toggle} href="#" variant="outline-success">
         Login
       </NavLink>
       <Modal isOpen={modal} toggle={toggle}>
